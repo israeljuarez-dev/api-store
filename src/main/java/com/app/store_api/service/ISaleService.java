@@ -1,20 +1,20 @@
 package com.app.store_api.service;
 
-import com.app.store_api.dto.sale.SaleDto;
-import com.app.store_api.dto.criteria.SearchSaleCriteriaDto;
+import com.app.store_api.dto.sale.SaleDTO;
+import com.app.store_api.dto.criteria.SearchSaleCriteriaDTO;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ISaleService {
 
-    SaleDto getById(UUID id);
+    List<SaleDTO> getSales(SearchSaleCriteriaDTO criteriaDTO);
 
-    SaleDto save (SaleDto saleDto);
+    SaleDTO getById(UUID id);
 
-    SaleDto update (UUID id, SaleDto saleDto);
+    SaleDTO save (SaleDTO saleDTO);
 
-    SaleDto deleteById(UUID id);
+    SaleDTO update (UUID id, SaleDTO saleDTO);
 
-    List<SaleDto> getSales(SearchSaleCriteriaDto criteriaDto);
+    SaleDTO deleteById(UUID id);
 }

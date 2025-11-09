@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record ErrorDto(
+public record ErrorDTO(
         String description,
         List<String> reasons
 ) {

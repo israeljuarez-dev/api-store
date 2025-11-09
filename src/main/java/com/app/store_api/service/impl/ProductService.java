@@ -1,8 +1,8 @@
 package com.app.store_api.service.impl;
 
 import com.app.store_api.domain.Product;
-import com.app.store_api.dto.product.ProductDto;
-import com.app.store_api.dto.criteria.SearchProductCriteriaDto;
+import com.app.store_api.dto.criteria.SearchProductCriteriaDTO;
+import com.app.store_api.dto.product.ProductDTO;
 import com.app.store_api.exception.ApiError;
 import com.app.store_api.exception.StoreException;
 import com.app.store_api.persistence.repository.IProductRepository;
@@ -11,6 +11,7 @@ import com.app.store_api.service.IProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
@@ -25,10 +26,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductService implements IProductService {
-
-    static Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
     IProductRepository productRepository;
 
@@ -36,96 +36,101 @@ public class ProductService implements IProductService {
 
     @Transactional(readOnly = true)
     @Override
-    public ProductDto getById(UUID id) {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isEmpty()) {
-            LOGGER.debug("Product with ID {} not found..", id);
-            throw new StoreException(ApiError.PRODUCT_NOT_FOUND);
+    public List<ProductDTO> getProducts(SearchProductCriteriaDTO criteriaDTO) {
+        log.info("Fetching list of products by criteria: {}", criteriaDTO);
+
+        Pageable pageable = PageRequest.of(criteriaDTO.getPageActual(), criteriaDTO.getPageSize());
+        List<Product> products = productRepository.findAll(ProductSpecification.withSearchCriteria(criteriaDTO), pageable);
+
+        if (products.isEmpty()) {
+            log.warn("Products list is empty for criteria: {}", criteriaDTO);
+            return Collections.emptyList();
         }
 
-        return conversionService.convert(product.get(), ProductDto.class);
+        log.debug("Products fetched successfully with size: {}", products.size());
+        return products.stream()
+                .map(product -> conversionService.convert(product, ProductDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ProductDTO getById(UUID id) {
+        log.info("Fetching product by ID: {}", id);
+
+        Product foundProduct = productRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Product with ID {} not found.", id);
+                    return new StoreException(ApiError.PRODUCT_NOT_FOUND);
+                });
+
+        log.info("Product with ID {} found successfully.", id);
+        return conversionService.convert(foundProduct, ProductDTO.class);
     }
 
     @Transactional
     @Override
-    public ProductDto save(ProductDto productDto) {
-        if (Objects.isNull(productDto)) {
-            LOGGER.debug("Attempted to save a null ProductDto.");
-            throw new StoreException(ApiError.PRODUCT_NOT_FOUND);
-        }
+    public ProductDTO save(ProductDTO productDTO) {
+        log.info("Saving new product");
 
-        LOGGER.debug("Starting conversion of ProductDto to Product entity.");
-        Product product = conversionService.convert(productDto, Product.class);
-
+        Product product = conversionService.convert(productDTO, Product.class);
         if (product == null) {
-            LOGGER.error("Conversion from ProductDto to Product entity failed.");
+            log.error("Conversion from ProductDTO to Product entity failed.");
             throw new StoreException(ApiError.PRODUCT_CONVERSION_FAILED);
         }
 
         productRepository.save(product);
+        log.info("Product saved successfully.");
 
-        return conversionService.convert(product, ProductDto.class);
+        return conversionService.convert(product, ProductDTO.class);
     }
 
     @Transactional
     @Override
-    public ProductDto update(UUID id, ProductDto productDto) {
-        if (!productRepository.existsById(id)) {
-            LOGGER.debug("Product with ID {} not found. Cannot update.", id);
-            throw new StoreException(ApiError.PRODUCT_NOT_FOUND);
-        }
+    public ProductDTO update(UUID id, ProductDTO productDTO) {
+        log.info("Updating product with ID: {}", id);
 
-        Product product = conversionService.convert(productDto, Product.class);
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Product with ID {} not found for update.", id);
+                    return new StoreException(ApiError.PRODUCT_NOT_FOUND);
+                });
 
-        Product updatedProduct = productRepository.save(Objects.requireNonNull(product));
+        existingProduct.setName(productDTO.name());
+        existingProduct.setTradeMark(productDTO.tradeMark());
+        existingProduct.setPrice(productDTO.price());
+        existingProduct.setDescription(productDTO.description());
 
-        return conversionService.convert(updatedProduct, ProductDto.class);
+        Product updatedProduct = productRepository.save(existingProduct);
+        log.info("Product with ID {} updated successfully.", id);
+
+        return conversionService.convert(updatedProduct, ProductDTO.class);
     }
 
     @Transactional
     @Override
     public void deleteById(UUID id) {
+        log.info("Deleting product with ID: {}", id);
+
         if (!productRepository.existsById(id)) {
-            LOGGER.debug("Product with ID {} not found. Cannot delete.", id);
+            log.warn("Product with ID {} not found. Cannot delete.", id);
             throw new StoreException(ApiError.PRODUCT_NOT_FOUND);
         }
 
         productRepository.deleteById(id);
+        log.debug("Product with ID {} deleted successfully.", id);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<ProductDto> getProducts(SearchProductCriteriaDto criteriaDto) {
-        Pageable pageable = PageRequest.of(criteriaDto.getPageActual(), criteriaDto.getPageSize());
+    /*
+    Manejo de Stock:
+    - Aumentar (actualizar) stock cuando ingresan productos (compra al proveedor o reposición)
+    - Disminuir (actualizar) stock cuando se vende o reserva un producto
+    - Validar stock disponible antes de realizar una operación (por ejemplo, no permitir ventas con stock negativo)
+    -> Tecnicamente será un endpoint que actualizará el stock dependiendo el body de json, usaremos un enum que determine
+       cada tipo de operacion
+    */
 
-        List<Product> products = productRepository.findAll(ProductSpecification.withSearchCriteria(criteriaDto), pageable);
+    // Obtener todos los productos cuya cantidad_disponible sea menor a 5 - localhost:8080/api/v1/products/missing_stock
 
-        if (products.isEmpty()) {
-            LOGGER.debug("Products are empty list.");
-            return Collections.emptyList();
-        }
-
-        return products.stream()
-                .map(product -> conversionService.convert(product, ProductDto.class))
-                .collect(Collectors.toList());
-    }
-
-    public List<Product> findProductsById(List<UUID> productsId){
-        LOGGER.debug("Entering findProductsById with {} product IDs", productsId.size());
-
-        return productsId.stream()
-                .map(id -> productRepository.findById(id).orElseThrow(() -> {
-                    LOGGER.debug("Product with ID {} not found.", id);
-                    return new StoreException(ApiError.PRODUCT_NOT_FOUND);
-                }))
-                .collect(Collectors.toList());
-    }
-
-    public BigDecimal calculateTotalPrice(List<Product> products){
-        LOGGER.debug("Entering calculateTotalAmount with {} products", products.size());
-
-        return products.stream()
-                .map(Product::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+    // Obtener la lista de productos de una determinada venta - localhost:8080/api/v1/sales/products/{saleId}
 }

@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SearchSaleCriteriaDto {
-    UUID saleId;
+public class SearchSaleCriteriaDTO {
+    UUID id;
 
     LocalDate creationDate;
 

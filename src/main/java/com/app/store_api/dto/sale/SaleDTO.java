@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Builder
-public record SaleDto(
+public record SaleDTO(
 
         @JsonProperty("sale_id")
         @Null(message = "Sale ID must be null; it is generated automatically")
-        UUID saleId,
+        UUID id,
 
         @JsonProperty("customer_id")
         @NotNull(message = "Customer ID must not be null")

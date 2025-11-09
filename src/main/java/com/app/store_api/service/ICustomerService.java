@@ -1,20 +1,20 @@
 package com.app.store_api.service;
 
-import com.app.store_api.dto.customer.CustomerDto;
-import com.app.store_api.dto.criteria.SearchCustomerCriteriaDto;
+import com.app.store_api.dto.customer.CustomerDTO;
+import com.app.store_api.dto.criteria.SearchCustomerCriteriaDTO;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ICustomerService {
 
-    CustomerDto getById(UUID id);
+    List<CustomerDTO> getCustomers(SearchCustomerCriteriaDTO criteriaDTO);
 
-    CustomerDto save (CustomerDto customerDto);
+    CustomerDTO getById(UUID id);
 
-    CustomerDto update (UUID id, CustomerDto customerDto);
+    CustomerDTO save (CustomerDTO customerDTO);
+
+    CustomerDTO update (UUID id, CustomerDTO customerDTO);
 
     void deleteById(UUID id);
-
-    List<CustomerDto> getCustomers(SearchCustomerCriteriaDto criteriaDto);
 }

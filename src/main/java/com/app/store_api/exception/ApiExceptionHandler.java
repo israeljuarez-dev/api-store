@@ -36,7 +36,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(ApiError.VALIDATION_ERROR.getStatus())
                 .body(
-                        new ErrorDto(
+                        new ErrorDTO(
                                 ApiError.VALIDATION_ERROR.getMessage(),
                                 reasons
                         )
@@ -59,7 +59,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(ApiError.VALIDATION_ERROR.getStatus())
                 .body(
-                        new ErrorDto(
+                        new ErrorDTO(
                                 ApiError.VALIDATION_ERROR.getMessage(),
                                 reasons
                         )

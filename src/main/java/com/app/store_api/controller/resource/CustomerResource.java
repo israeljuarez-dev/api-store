@@ -1,8 +1,8 @@
 package com.app.store_api.controller.resource;
 
-import com.app.store_api.dto.customer.CustomerDto;
-import com.app.store_api.dto.criteria.SearchCustomerCriteriaDto;
-import com.app.store_api.exception.ErrorDto;
+import com.app.store_api.dto.customer.CustomerDTO;
+import com.app.store_api.dto.criteria.SearchCustomerCriteriaDTO;
+import com.app.store_api.exception.ErrorDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -91,7 +91,7 @@ public interface CustomerResource {
                             description = "Return the information of customers. The list may be empty if no customers match the search criteria.",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = CustomerDto.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = CustomerDTO.class))
                             )
 
                     ),
@@ -100,12 +100,12 @@ public interface CustomerResource {
                             description = "Internal server error occurred while retrieving customers",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     )
             }
     )
-    ResponseEntity<List<CustomerDto>> getCustomers(SearchCustomerCriteriaDto criteriaDto);
+    ResponseEntity<List<CustomerDTO>> getCustomers(SearchCustomerCriteriaDTO criteriaDTO);
 
     @Operation(
             summary = "Get the information of a single customer",
@@ -126,7 +126,7 @@ public interface CustomerResource {
                             description = "Return the information of a customer",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = CustomerDto.class)
+                                    schema = @Schema(implementation = CustomerDTO.class)
                             )
                     ),
                     @ApiResponse(
@@ -134,7 +134,7 @@ public interface CustomerResource {
                             description = "Customer not found",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     ),
                     @ApiResponse(
@@ -142,12 +142,12 @@ public interface CustomerResource {
                             description = "Internal server error occurred while retrieving customer",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     )
             }
     )
-    ResponseEntity<CustomerDto> getCustomerById(@Min(1) @PathVariable("id") UUID id);
+    ResponseEntity<CustomerDTO> getCustomerById(@Min(1) @PathVariable("id") UUID id);
 
     @Operation(
             summary = "Register a customer",
@@ -177,7 +177,7 @@ public interface CustomerResource {
                             description = "Returns the saved customer's information.",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = CustomerDto.class)
+                                    schema = @Schema(implementation = CustomerDTO.class)
                             )
                     ),
                     @ApiResponse(
@@ -185,7 +185,7 @@ public interface CustomerResource {
                             description = "Bad request of the information to persist",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     ),
                     @ApiResponse(
@@ -193,12 +193,12 @@ public interface CustomerResource {
                             description = "Something bad happens to register and obtain the customer",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     )
             }
     )
-    ResponseEntity<CustomerDto> saveCustomer(@RequestBody @Valid CustomerDto customerDto);
+    ResponseEntity<CustomerDTO> saveCustomer(@RequestBody @Valid CustomerDTO customerDTO);
 
     @Operation(
             summary = "Update an existing customer",
@@ -236,7 +236,7 @@ public interface CustomerResource {
                             description = "Returns the updated customer's information.",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = CustomerDto.class)
+                                    schema = @Schema(implementation = CustomerDTO.class)
                             )
                     ),
                     @ApiResponse(
@@ -244,7 +244,7 @@ public interface CustomerResource {
                             description = "Customer not found",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     ),
                     @ApiResponse(
@@ -252,12 +252,12 @@ public interface CustomerResource {
                             description = "Something bad happens to update the customer",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     )
             }
     )
-    ResponseEntity<CustomerDto> updateCustomer(@Min(1) @PathVariable("id") UUID id, @RequestBody @Valid CustomerDto customerDto);
+    ResponseEntity<CustomerDTO> updateCustomer(@Min(1) @PathVariable("id") UUID id, @RequestBody @Valid CustomerDTO customerDTO);
 
     @Operation(
             summary = "Delete an existing customer",
@@ -288,7 +288,7 @@ public interface CustomerResource {
                             description = "Customer not found",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     ),
                     @ApiResponse(
@@ -296,7 +296,7 @@ public interface CustomerResource {
                             description = "Something bad happens to update the customer",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ErrorDto.class)
+                                    schema = @Schema(implementation = ErrorDTO.class)
                             )
                     )
             }

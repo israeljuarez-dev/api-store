@@ -8,11 +8,11 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder
-public record ProductDto(
+public record ProductDTO(
 
         @JsonProperty("product_id")
         @Null(message = "Product ID must be null; it is generated automatically")
-        UUID productId,
+        UUID id,
 
         @NotBlank(message = "Name must not be blank")
         @Size(max = 50, message = "Name must not exceed 50 characters")
@@ -25,6 +25,10 @@ public record ProductDto(
 
         @NotNull(message = "Price must not be null")
         @DecimalMin(value = "0.1", inclusive = false, message = "Price must be greater than 0")
-        BigDecimal price
+        BigDecimal price,
+
+        @NotBlank(message = "Name must not be blank")
+        @Size(max = 500, message = "Description must not exceed 500 characters")
+        String description
 ) {
 }

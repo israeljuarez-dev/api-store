@@ -9,11 +9,11 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record CustomerDto(
+public record CustomerDTO(
 
         @JsonProperty("customer_id")
         @Null(message = "Customer ID must be null; it is generated automatically")
-        UUID customerId,
+        UUID id,
 
         @NotBlank(message = "Name must not be blank")
         @Size(max = 50, message = "Name must not exceed 50 characters")

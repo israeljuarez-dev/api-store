@@ -1,8 +1,8 @@
 package com.app.store_api.controller;
 
 import com.app.store_api.controller.resource.CustomerResource;
-import com.app.store_api.dto.customer.CustomerDto;
-import com.app.store_api.dto.criteria.SearchCustomerCriteriaDto;
+import com.app.store_api.dto.customer.CustomerDTO;
+import com.app.store_api.dto.criteria.SearchCustomerCriteriaDTO;
 import com.app.store_api.exception.ApiError;
 import com.app.store_api.exception.StoreException;
 import com.app.store_api.service.impl.CustomerService;
@@ -34,31 +34,31 @@ public class CustomerController implements CustomerResource {
     CustomerService customerService;
 
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getCustomers(SearchCustomerCriteriaDto criteriaDto) {
+    public ResponseEntity<List<CustomerDTO>> getCustomers(SearchCustomerCriteriaDTO criteriaDTO) {
         LOGGER.info("Obtain all the customers");
-        List<CustomerDto> response = customerService.getCustomers(criteriaDto);
+        List<CustomerDTO> response = customerService.getCustomers(criteriaDTO);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> getCustomerById(@Min(1) @PathVariable("id") UUID id) {
+    public ResponseEntity<CustomerDTO> getCustomerById(@Min(1) @PathVariable("id") UUID id) {
         LOGGER.info("Obtain information from a customer with {}", id);
-        CustomerDto response = customerService.getById(id);
+        CustomerDTO response = customerService.getById(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
     @RateLimiter(name = "post-customer", fallbackMethod = "fallBackPost")
-    public ResponseEntity<CustomerDto> saveCustomer(@RequestBody @Valid CustomerDto customerDto) {
+    public ResponseEntity<CustomerDTO> saveCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
         LOGGER.info("Saving new customer");
-        CustomerDto response = customerService.save(customerDto);
+        CustomerDTO response = customerService.save(customerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> updateCustomer(@Min(1) @PathVariable("id") UUID id, @RequestBody @Valid CustomerDto customerDto) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@Min(1) @PathVariable("id") UUID id, @RequestBody @Valid CustomerDTO customerDTO) {
         LOGGER.info("Updating a customer with {}", id);
-        CustomerDto response = customerService.update(id, customerDto);
+        CustomerDTO response = customerService.update(id, customerDTO);
         return ResponseEntity.ok(response);
     }
 
@@ -69,7 +69,7 @@ public class CustomerController implements CustomerResource {
         return ResponseEntity.noContent().build();
     }
 
-    private ResponseEntity<CustomerDto> fallBackPost() {
+    private ResponseEntity<CustomerDTO> fallBackPost() {
         LOGGER.debug("calling to fallbackPost");
         throw new StoreException(ApiError.EXCEED_NUMBER_REQUEST);
     }

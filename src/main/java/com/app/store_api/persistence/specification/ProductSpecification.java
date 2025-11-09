@@ -1,6 +1,7 @@
 package com.app.store_api.persistence.specification;
 
 import com.app.store_api.domain.Product;
+import com.app.store_api.dto.criteria.SearchProductCriteriaDTO;
 import com.app.store_api.dto.criteria.SearchProductCriteriaDto;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,13 +11,13 @@ import java.util.List;
 
 public class ProductSpecification {
 
-    public static Specification<Product> withSearchCriteria(SearchProductCriteriaDto criteriaDTO) {
+    public static Specification<Product> withSearchCriteria(SearchProductCriteriaDTO criteriaDTO) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (criteriaDTO.getProductId() != null) {
+            if (criteriaDTO.getId() != null) {
                 predicates.add(
-                        criteriaBuilder.equal(root.get("productId"), criteriaDTO.getProductId())
+                        criteriaBuilder.equal(root.get("productId"), criteriaDTO.getId())
                 );
             }
 

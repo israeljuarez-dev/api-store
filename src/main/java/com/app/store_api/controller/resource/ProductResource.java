@@ -1,8 +1,8 @@
 package com.app.store_api.controller.resource;
 
-import com.app.store_api.dto.product.ProductDto;
-import com.app.store_api.dto.criteria.SearchProductCriteriaDto;
-import com.app.store_api.exception.ErrorDto;
+import com.app.store_api.dto.criteria.SearchProductCriteriaDTO;
+import com.app.store_api.dto.product.ProductDTO;
+import com.app.store_api.exception.ErrorDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -35,34 +35,102 @@ public interface ProductResource {
             You can also specify the page number, page size, and sort options.
         """,
             parameters = {
-                    @Parameter(in = ParameterIn.QUERY, name = "name", description = "Filter by product name", example = "Laptop"),
-                    @Parameter(in = ParameterIn.QUERY, name = "tradeMark", description = "Filter by trade mark", example = "Lenovo"),
-                    @Parameter(in = ParameterIn.QUERY, name = "price", description = "Filter by product price", example = "1200.00"),
-                    @Parameter(in = ParameterIn.QUERY, name = "creationDate", description = "Filter by creation date (yyyy-MM-dd)", example = "2024-06-01"),
-                    @Parameter(in = ParameterIn.QUERY, name = "sortField", description = "Field to sort by (e.g., 'price')", example = "price"),
-                    @Parameter(in = ParameterIn.QUERY, name = "sortingDirection", description = "Sort direction: 'asc' or 'desc'", example = "asc"),
-                    @Parameter(in = ParameterIn.QUERY, name = "pageActual", description = "Page number (starts at 0)", example = "0"),
-                    @Parameter(in = ParameterIn.QUERY, name = "pageSize", description = "Number of records per page", example = "10")
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "name",
+                            description = "Filter by product name",
+                            example = "Laptop"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "tradeMark",
+                            description = "Filter by trade mark",
+                            example = "Lenovo"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "price",
+                            description = "Filter by product price",
+                            example = "1200.00"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "creationDate",
+                            description = "Filter by creation date (yyyy-MM-dd)",
+                            example = "2024-06-01"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "sortField",
+                            description = "Field to sort by (e.g., 'price')",
+                            example = "price"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "sortingDirection",
+                            description = "Sort direction: 'asc' or 'desc'",
+                            example = "asc"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "pageActual",
+                            description = "Page number (starts at 0)",
+                            example = "0"
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "pageSize",
+                            description = "Number of records per page",
+                            example = "10"
+                    )
             },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Returns the list of products", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))),
-                    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Returns the list of products",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class))
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    )
             }
     )
-    ResponseEntity<List<ProductDto>> getProducts(SearchProductCriteriaDto criteriaDto);
+    ResponseEntity<List<ProductDTO>> getProducts(SearchProductCriteriaDTO criteriaDTO);
 
     @Operation(
             summary = "Get a single product by ID",
             parameters = {
-                    @Parameter(in = ParameterIn.PATH, name = "id", description = "Product ID", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    @Parameter(
+                            in = ParameterIn.PATH,
+                            name = "id",
+                            description = "Product ID",
+                            example = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    )
             },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Returns the product", content = @Content(schema = @Schema(implementation = ProductDto.class))),
-                    @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
-                    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Returns the product",
+                            content = @Content(schema = @Schema(implementation = ProductDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Product not found",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    )
             }
     )
-    ResponseEntity<ProductDto> getProductById(@PathVariable("id") UUID id);
+    ResponseEntity<ProductDTO> getProductById(@PathVariable("id") UUID id);
 
     @Operation(
             summary = "Create a new product",
@@ -85,12 +153,24 @@ public interface ProductResource {
                     )
             ),
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Product created", content = @Content(schema = @Schema(implementation = ProductDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
-                    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Product created",
+                            content = @Content(schema = @Schema(implementation = ProductDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Invalid request",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    )
             }
     )
-    ResponseEntity<ProductDto> saveProduct(@RequestBody @Valid ProductDto productDto);
+    ResponseEntity<ProductDTO> saveProduct(@RequestBody @Valid ProductDTO productDTO);
 
     @Operation(
             summary = "Update an existing product",
@@ -116,22 +196,50 @@ public interface ProductResource {
                     )
             ),
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Product updated", content = @Content(schema = @Schema(implementation = ProductDto.class))),
-                    @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
-                    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Product updated",
+                            content = @Content(schema = @Schema(implementation = ProductDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Product not found",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    )
             }
     )
-    ResponseEntity<ProductDto> updateProduct(@PathVariable("id") UUID id, @RequestBody @Valid ProductDto productDto);
+    ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") UUID id, @RequestBody @Valid ProductDTO productDTO);
 
     @Operation(
             summary = "Delete a product",
             parameters = {
-                    @Parameter(in = ParameterIn.PATH, name = "id", description = "Product ID", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    @Parameter(
+                            in = ParameterIn.PATH,
+                            name = "id",
+                            description = "Product ID",
+                            example = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    )
             },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Product deleted"),
-                    @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
-                    @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Product deleted"
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Product not found",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    )
             }
     )
     ResponseEntity<Void> deleteProduct(@PathVariable UUID id);

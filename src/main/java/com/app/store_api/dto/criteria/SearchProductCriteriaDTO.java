@@ -3,9 +3,9 @@ package com.app.store_api.dto.criteria;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
-
 
 @Getter
 @Setter
@@ -15,15 +15,15 @@ import java.util.UUID;
 @ToString
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SearchCustomerCriteriaDto {
+public class SearchProductCriteriaDTO {
 
-    UUID customerId;
+    UUID id;
 
     String name;
 
-    String lastName;
+    String tradeMark;
 
-    String dni;
+    BigDecimal price;
 
     LocalDate creationDate;
 

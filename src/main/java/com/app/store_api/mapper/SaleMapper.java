@@ -1,13 +1,13 @@
 package com.app.store_api.mapper;
 
 import com.app.store_api.domain.Sale;
-import com.app.store_api.dto.sale.SaleDto;
+import com.app.store_api.dto.sale.SaleDTO;
 import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
 
 @Mapper(componentModel = "spring")
-public interface SaleMapper extends Converter<Sale, SaleDto> {
+public interface SaleMapper extends Converter<Sale, SaleDTO> {
 
     @Override
-    SaleDto convert(Sale source);
+    SaleDTO convert(Sale source);
 }

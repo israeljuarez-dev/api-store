@@ -23,7 +23,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID customerId;
+    UUID id;
 
     @Column(nullable = false, length = 50)
     String name;

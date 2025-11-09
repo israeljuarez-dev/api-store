@@ -25,7 +25,7 @@ public class Sale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID saleId;
+    UUID id;
 
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;

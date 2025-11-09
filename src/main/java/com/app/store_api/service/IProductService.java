@@ -1,20 +1,20 @@
 package com.app.store_api.service;
 
-import com.app.store_api.dto.product.ProductDto;
-import com.app.store_api.dto.criteria.SearchProductCriteriaDto;
+import com.app.store_api.dto.criteria.SearchProductCriteriaDTO;
+import com.app.store_api.dto.product.ProductDTO;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface IProductService {
 
-    ProductDto getById(UUID id);
+    List<ProductDTO> getProducts(SearchProductCriteriaDTO criteriaDTO);
 
-    ProductDto save (ProductDto productDto);
+    ProductDTO getById(UUID id);
 
-    ProductDto update (UUID id, ProductDto productDto);
+    ProductDTO save (ProductDTO productDTO);
+
+    ProductDTO update (UUID id, ProductDTO productDTO);
 
     void deleteById(UUID id);
-
-    List<ProductDto> getProducts(SearchProductCriteriaDto criteriaDto);
 }
