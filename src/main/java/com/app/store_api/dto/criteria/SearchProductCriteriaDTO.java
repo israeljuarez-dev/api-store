@@ -25,6 +25,8 @@ public class SearchProductCriteriaDTO {
 
     BigDecimal price;
 
+    Integer stock;
+
     LocalDate creationDate;
 
     String sortField; //campo a ordenar

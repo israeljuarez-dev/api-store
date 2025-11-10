@@ -132,5 +132,4 @@ public class ProductService implements IProductService {
 
     // Obtener todos los productos cuya cantidad_disponible sea menor a 5 - localhost:8080/api/v1/products/missing_stock
 
-    // Obtener la lista de productos de una determinada venta - localhost:8080/api/v1/sales/products/{saleId}
 }

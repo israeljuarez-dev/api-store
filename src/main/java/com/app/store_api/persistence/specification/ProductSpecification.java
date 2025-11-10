@@ -2,7 +2,6 @@ package com.app.store_api.persistence.specification;
 
 import com.app.store_api.domain.Product;
 import com.app.store_api.dto.criteria.SearchProductCriteriaDTO;
-import com.app.store_api.dto.criteria.SearchProductCriteriaDto;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -37,6 +36,10 @@ public class ProductSpecification {
                 predicates.add(
                         criteriaBuilder.equal(root.get("price"), criteriaDTO.getPrice())
                 );
+            }
+
+            if(criteriaDTO.getStock() != null){
+                predicates.add(criteriaBuilder.equal(root.get("stock"), criteriaDTO.getStock()));
             }
 
             if (criteriaDTO.getCreationDate() != null){

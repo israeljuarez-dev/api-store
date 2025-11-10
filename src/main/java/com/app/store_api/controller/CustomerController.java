@@ -5,7 +5,7 @@ import com.app.store_api.dto.customer.CustomerDTO;
 import com.app.store_api.dto.criteria.SearchCustomerCriteriaDTO;
 import com.app.store_api.exception.ApiError;
 import com.app.store_api.exception.StoreException;
-import com.app.store_api.service.impl.CustomerService;
+import com.app.store_api.service.ICustomerService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -31,7 +31,7 @@ public class CustomerController implements CustomerResource {
 
     static Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 
-    CustomerService customerService;
+    ICustomerService customerService;
 
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> getCustomers(SearchCustomerCriteriaDTO criteriaDTO) {

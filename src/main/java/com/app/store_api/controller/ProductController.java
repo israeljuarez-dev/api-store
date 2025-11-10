@@ -5,7 +5,7 @@ import com.app.store_api.dto.criteria.SearchProductCriteriaDTO;
 import com.app.store_api.dto.product.ProductDTO;
 import com.app.store_api.exception.ApiError;
 import com.app.store_api.exception.StoreException;
-import com.app.store_api.service.impl.ProductService;
+import com.app.store_api.service.IProductService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -31,7 +31,7 @@ public class ProductController implements ProductResource {
 
     static Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
-    ProductService productService;
+    IProductService productService;
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getProducts(SearchProductCriteriaDTO criteriaDTO) {

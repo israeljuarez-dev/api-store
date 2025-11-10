@@ -1,6 +1,9 @@
 package com.app.store_api.service.impl;
 
 public class SaleService {
+
+    // Obtener la lista de productos de una determinada venta - localhost:8080/api/v1/sales/products/{saleId}
+    
     // Obtener la sumatoria del monto y también cantidad total de ventas de un determinado día - localhost:8080/api/v1/sales/{sale_date}
 
     // Obtener el codigo_venta, el total, la cantidad de productos, el nombre del cliente y el

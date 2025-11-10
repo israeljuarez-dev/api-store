@@ -27,6 +27,10 @@ public record ProductDTO(
         @DecimalMin(value = "0.1", inclusive = false, message = "Price must be greater than 0")
         BigDecimal price,
 
+        @NotNull(message = "Stck must not be null")
+        @Min(value = 0, message = "Stock cannot be negative")
+        Integer stock,
+
         @NotBlank(message = "Name must not be blank")
         @Size(max = 500, message = "Description must not exceed 500 characters")
         String description
