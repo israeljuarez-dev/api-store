@@ -1,0 +1,36 @@
+services:
+  api-store-image:
+    image: api-store-image
+    container_name: api-store-container
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres_database
+      DB_PORT: 5432
+      DB_NAME: store
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    depends_on:
+      - postgres
+    networks:
+      - spring-network
+
+  postgres:
+    image: postgres:16
+    container_name: postgres_database
+    environment:
+      POSTGRES_DB: store
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - spring-network
+
+networks:
+  spring-network:
+
+volumes:
+  postgres-volume:
